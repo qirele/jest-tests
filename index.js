@@ -15,3 +15,32 @@ export const calculator = {
     return a / b;
   },
 }
+
+export function caesarCypher(string, key) {
+  return [...string].map(letter => nextLetter(letter, key)).join("");
+
+}
+
+export function nextLetter(letter, key) {
+  // modify only letters
+  // https://stackoverflow.com/a/62032796
+  // RegExp(/^\p{L}/,'u').test(str)
+  const isLetter = RegExp(/^\p{L}/, 'u').test(letter);
+  if (letter.length === 1 && isLetter) {
+    const letterCode = letter.charCodeAt(0);
+    let nextLetterCode = letterCode + key;
+    if (letter === letter.toLowerCase()) {
+      if (nextLetterCode > 122) {
+        nextLetterCode = 96 + (nextLetterCode - 122);
+      }
+    } else {
+      if (nextLetterCode > 90) {
+        nextLetterCode = 64 + (nextLetterCode - 90);
+      }
+    }
+
+    return String.fromCharCode(nextLetterCode);
+  }
+
+  return letter;
+}
